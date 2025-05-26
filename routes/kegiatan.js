@@ -1,5 +1,6 @@
 const express = require("express");
-const db = require("../services/db");
+// const db = require("../services/db");
+import db from "../services/db"; // Pastikan path ini sesuai dengan struktur proyek Anda
 const router = express.Router();
 
 router.get("/", (req, res) => {
