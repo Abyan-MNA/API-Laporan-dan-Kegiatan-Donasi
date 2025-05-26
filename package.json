@@ -4,6 +4,7 @@
   "description": "Proyek API laporan dan kegiatan",
   "main": "kachina-04.js",
   "scripts": {
+    "start": "node app.js",
     "test": "node kachina-04.js"
   },
   "author": "",
