@@ -1,0 +1,14 @@
+{
+  "name": "laporan-kegiatan",
+  "version": "1446.12.0",
+  "description": "Proyek API laporan dan kegiatan",
+  "main": "kachina-04.js",
+  "scripts": {
+    "test": "node kachina-04.js"
+  },
+  "author": "",
+  "license": "BSL-1.0",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
