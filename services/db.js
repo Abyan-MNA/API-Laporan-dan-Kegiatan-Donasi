@@ -1,8 +1,22 @@
-const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database("./database.sqlite", (err) => {
-  if (err) {
-    console.error("Gagal connect ke database:", err.message);
-  } else {
-    console.log("Connected to SQLite database.");
-  }
+const sequelize = new Sequelize({
+  dialect: "sqlite",
+  storage: "./database.sqlite",
 });
+
+// Define User model
+class User extends Model {}
+User.init(
+  {
+    name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+  },
+  { sequelize, modelName: "user" }
+);
+
+// Sync models with database
+sequelize.sync();
+
+// Middleware for parsing request body
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());

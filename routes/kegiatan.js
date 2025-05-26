@@ -1,14 +1,28 @@
 const express = require("express");
-// const db = require("../services/db");
-import db from "../services/db"; // Pastikan path ini sesuai dengan struktur proyek Anda
 const router = express.Router();
+const sqlite3 = require("sqlite3").verbose();
 
+// buka koneksi ke database SQLite
+const db = new sqlite3.Database("./database.sqlite", (err) => {
+  if (err) {
+    console.error("Gagal connect ke database:", err.message);
+  } else {
+    console.log("Connected to SQLite database.");
+  }
+});
+
+// middleware untuk parse JSON body
+router.use(express.json());
+
+/**
+ * GET /kegiatan
+ * Ambil semua kegiatan
+ */
 router.get("/", (req, res) => {
   const sql = `SELECT * FROM kegiatan_donasi ORDER BY id_kegiatan`;
   db.all(sql, [], (err, rows) => {
     if (err) {
-      console.error(err);
-      return res.status(500).json({ error: err.message });
+      return res.status(500).json({ error: "terdapat error" });
     }
     res.json(rows);
   });

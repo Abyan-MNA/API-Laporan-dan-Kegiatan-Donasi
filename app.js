@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 const kegiatan = require("./routes/kegiatan");
+const laporan = require("./routes/laporan");
 
 app.use(express.json());
 
