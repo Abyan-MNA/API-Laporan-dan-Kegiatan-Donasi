@@ -1,0 +1,13 @@
+GET http://localhost:3000/
+
+###
+
+POST http://localhost:3000/kegiatan
+Content-Type: application/json
+
+{
+  "nama": "Kegiatan Baru",
+  "tanggal": "2023-10-01",
+  "lokasi": "Lokasi Baru"
+}
+

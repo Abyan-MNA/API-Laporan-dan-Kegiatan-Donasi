@@ -2,16 +2,18 @@
   "name": "laporan-kegiatan",
   "version": "1446.12.0",
   "description": "Proyek API laporan dan kegiatan",
-  "main": "kachina-04.js",
+  "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "test": "node kachina-04.js"
+    "dev": "nodemon app.js"
   },
   "author": "",
   "license": "BSL-1.0",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "sequelize": "^6.37.7",
-    "sqlite3": "^5.1.7"
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^6.8.2"
   }
 }
