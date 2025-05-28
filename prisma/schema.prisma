@@ -6,10 +6,59 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+model Kegiatan {
+  id             Int       @id @default(autoincrement())
+  judul          String
+  deskripsi      String?
+  lokasi         String?
+  tanggalMulai   DateTime  @map("tanggal_mulai")
+  tanggalSelesai DateTime? @map("tanggal_selesai")
+  status         String    @default("draft")
+
+  // Relations
+  laporanDonasi         LaporanDonasi[]        @relation("KegiatanDonasi")
+  laporanDistribusi     LaporanDistribusi[]    @relation("KegiatanDistribusi")
+
+  @@map("kegiatan")
+}
+
+/// Modul 4: Laporan Donasi
+model LaporanDonasi {
+  id            Int       @id @default(autoincrement())
+  donasiId      Int
+  donaturId     String
+  tanggalDonasi DateTime  @map("tanggal_donasi")
+  jumlah        Decimal?
+  jenisDonasi   String    @map("jenis_donasi")
+  status        String    @default("pending")
+  buktiUrl      String?   @map("bukti_url")
+
+  // Optional relation to kegiatan
+  kegiatanId    Int?
+  kegiatan      Kegiatan? @relation("KegiatanDonasi", fields: [kegiatanId], references: [id])
+
+  @@map("laporan_donasi")
+}
+
+/// Modul 4: Laporan Distribusi
+model LaporanDistribusi {
+  id                Int         @id @default(autoincrement())
+  distribusiId      Int
+  penerima          String
+  tanggalDistribusi DateTime    @map("tanggal_distribusi")
+  metodeDistribusi  String      @map("metode_distribusi")
+  statusKonfirmasi  String      @default("pending") @map("status_konfirmasi")
+  catatan           String?
+
+  // Optional relation to kegiatan
+  kegiatanId        Int?
+  kegiatan          Kegiatan?   @relation("KegiatanDistribusi", fields: [kegiatanId], references: [id])
+
+  @@map("laporan_distribusi")
 }

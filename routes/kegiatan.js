@@ -1,155 +1,68 @@
 const express = require("express");
 const router = express.Router();
-const sqlite3 = require("sqlite3").verbose();
+const prisma = require("../services/db");
 
 // buka koneksi ke database SQLite
-const db = new sqlite3.Database("./database.sqlite", (err) => {
-  if (err) {
-    console.error("Gagal connect ke database:", err.message);
-  } else {
-    console.log("Connected to SQLite database.");
-  }
-});
 
 // middleware untuk parse JSON body
-router.use(express.json());
+// router.use(express.json());
 
-/**
- * GET /kegiatan
- * Ambil semua kegiatan
- */
-router.get("/", (req, res) => {
-  const sql = `SELECT * FROM kegiatan_donasi ORDER BY id_kegiatan`;
-  db.all(sql, [], (err, rows) => {
-    if (err) {
-      return res.status(500).json({ error: "terdapat error" });
-    }
-    res.json(rows);
+router.get("/", async (req, res) => {
+  const activities = await prisma.kegiatan.findMany();
+  return res.status(200).json({
+    message: "Berhasil mengambil semua kegiatan",
+    data: activities,
   });
 });
 
-/**
- * GET /kegiatan/:id
- * Ambil satu kegiatan berdasarkan ID
- */
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const sql = `SELECT * FROM kegiatan_donasi WHERE id_kegiatan = ?`;
-  db.get(sql, [id], (err, row) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: err.message });
-    }
-    if (!row)
-      return res.status(404).json({ error: "Kegiatan tidak ditemukan" });
-    res.json(row);
+  const activity = await prisma.kegiatan.findUnique({
+    where: { id: parseInt(id) },
+  });
+  return res.status(200).json({
+    message: "Berhasil mengambil kegiatan",
+    data: activity,
   });
 });
 
-/**
- * POST /kegiatan
- * Tambah kegiatan baru
- * Body: { nama_kegiatan, deskripsi, tanggal_mulai, tanggal_selesai, target_donasi, status }
- */
-router.post("/", (req, res) => {
-  const {
-    nama_kegiatan,
-    deskripsi,
-    tanggal_mulai,
-    tanggal_selesai,
-    target_donasi,
-    status,
-  } = req.body;
-  const sql = `
-    INSERT INTO kegiatan_donasi 
-      (nama_kegiatan, deskripsi, tanggal_mulai, tanggal_selesai, target_donasi, total_terkumpul, status)
-    VALUES (?, ?, ?, ?, ?, 0, ?)
-  `;
-  db.run(
-    sql,
-    [
-      nama_kegiatan,
-      deskripsi,
-      tanggal_mulai,
-      tanggal_selesai,
-      target_donasi,
-      status,
-    ],
-    function (err) {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: err.message });
-      }
-      // this.lastID berisi id_kegiatan baru
-      res.status(201).json({ id_kegiatan: this.lastID });
-    }
-  );
-});
+router.post("/", async (req, res) => {
+  console.log("Request body:", req.body);
+  const { judul, deskripsi, lokasi, tanggal_mulai, tanggal_selesai, status } =
+    req.body;
 
-/**
- * PUT /kegiatan/:id
- * Update data kegiatan
- * Body boleh berisi sebagian atau semua kolom: { nama_kegiatan, deskripsi, tanggal_mulai, tanggal_selesai, target_donasi, total_terkumpul, status }
- */
-router.put("/:id", (req, res) => {
-  const { id } = req.params;
-  const fields = [];
-  const values = [];
-
-  // mapping body ke SQL SET clause
-  for (const key of [
-    "nama_kegiatan",
-    "deskripsi",
-    "tanggal_mulai",
-    "tanggal_selesai",
-    "target_donasi",
-    "total_terkumpul",
-    "status",
-  ]) {
-    if (req.body[key] !== undefined) {
-      fields.push(`${key} = ?`);
-      values.push(req.body[key]);
-    }
+  if (!judul || !tanggal_mulai) {
+    return res
+      .status(400)
+      .json({ error: "Judul, dan tanggal mulai harus diisi" });
   }
-  if (fields.length === 0) {
-    return res.status(400).json({ error: "Tidak ada field yang di-update" });
+  const newActivity = await prisma.kegiatan.create({
+    data: {
+      judul: judul,
+      deskripsi: deskripsi,
+      lokasi: lokasi ?? undefined,
+      tanggalMulai: new Date(tanggal_mulai),
+      tanggalSelesai: tanggal_selesai ? new Date(tanggal_selesai) : undefined,
+      status: status ?? undefined,
+    },
+  });
+  if (!newActivity) {
+    return res.status(500).json({ error: "Gagal menambahkan kegiatan" });
   }
-
-  const sql = `
-    UPDATE kegiatan_donasi 
-    SET ${fields.join(", ")}
-    WHERE id_kegiatan = ?
-  `;
-  values.push(id);
-
-  db.run(sql, values, function (err) {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: err.message });
-    }
-    if (this.changes === 0) {
-      return res.status(404).json({ error: "Kegiatan tidak ditemukan" });
-    }
-    res.json({ updated: this.changes });
+  return res.status(201).json({
+    message: "Kegiatan berhasil ditambahkan",
+    data: newActivity,
   });
 });
 
-/**
- * DELETE /kegiatan/:id
- * Hapus kegiatan
- */
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
-  const sql = `DELETE FROM kegiatan_donasi WHERE id_kegiatan = ?`;
-  db.run(sql, [id], function (err) {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: err.message });
-    }
-    if (this.changes === 0) {
-      return res.status(404).json({ error: "Kegiatan tidak ditemukan" });
-    }
-    res.json({ deleted: this.changes });
+  const activity = await prisma.kegiatan.delete({
+    where: { id: parseInt(id) },
+  });
+  return res.status(200).json({
+    message: "Berhasil menghapus kegiatan",
+    data: activity,
   });
 });
 

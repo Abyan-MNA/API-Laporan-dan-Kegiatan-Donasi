@@ -14,3 +14,30 @@ Content-Type: application/json
 ###
 
 POST http://localhost:3000/login
+
+
+###
+POST  http://localhost:3000/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
+
+###
+
+POST  http://localhost:3000/kegiatan
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
+Content-Type: application/json
+
+{
+  "judul": "Kegiatan Pertemuan",
+  "deskripsi": "Deskripsi kegiatan pertemuan",
+  "tanggal_mulai": "2023-10-01",
+  "tanggal_selesai": "2023-10-05",
+  "lokasi": "Lokasi Pertemuan"
+}
+
+###
+DELETE http://localhost:3000/kegiatan/18
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
+
+###
+GET http://localhost:3000/kegiatan/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
