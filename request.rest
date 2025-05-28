@@ -11,3 +11,6 @@ Content-Type: application/json
   "lokasi": "Lokasi Baru"
 }
 
+###
+
+POST http://localhost:3000/login
