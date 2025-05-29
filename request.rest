@@ -35,9 +35,34 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/kegiatan/18
+DELETE http://localhost:3000/kegiatan/2e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 
 ###
-GET http://localhost:3000/kegiatan/2
+GET http://localhost:3000/kegiatan/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
+
+###
+PUT http://localhost:3000/kegiatan/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
+Content-Type: application/json
+
+{
+  "judul": "Kegiatan Pertemuan percobaan 3",
+  "deskripsi": "Deskripsi kegiatan pertemuan",
+  "lokasi": "Lokasi Pertemuan",
+  "tanggal_mulai": "2023-10-01T00:00:00.000Z",
+  "tanggal_selesai": "2023-10-05T00:00:00.000Z",
+  "status": "draft"
+}
+###
+
+PATCH  http://localhost:3000/kegiatan/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
+Content-Type: application/json
+
+{
+  "judul": "Kegiatan Pertemuan percobaan 3",
+  "deskripsi": "Deskripsi kegiatan pertemuan",
+  "lokasi": "Lokasi Pertemuan"
+}
