@@ -1,29 +1,40 @@
 const express = require("express");
 const router = express.Router();
 const prisma = require("../services/db");
-
+const { getActivities, cekActivitiesId } = require("../services/activities");
 // buka koneksi ke database SQLite
 
 // middleware untuk parse JSON body
 // router.use(express.json());
 
 router.get("/", async (req, res) => {
-  const activities = await prisma.kegiatan.findMany();
-  return res.status(200).json({
-    message: "Berhasil mengambil semua kegiatan",
-    data: activities,
-  });
+  try {
+    const activities = await getActivities();
+    return res.status(200).json({
+      message: "Berhasil mengambil semua kegiatan",
+      data: activities,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: err.message,
+    });
+  }
 });
 
 router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  const activity = await prisma.kegiatan.findUnique({
-    where: { id: parseInt(id) },
-  });
-  return res.status(200).json({
-    message: "Berhasil mengambil kegiatan",
-    data: activity,
-  });
+  try {
+    const { id } = req.params;
+    const cekId = await cekActivitiesId(parseInt(id));
+    const activity = await getActivities(cekId);
+    return res.status(200).json({
+      message: "Berhasil mengambil kegiatan",
+      data: activity,
+    });
+  } catch (err) {
+    return res.status(400).json({
+      message: err.message,
+    });
+  }
 });
 
 router.post("/", async (req, res) => {
@@ -65,5 +76,11 @@ router.delete("/:id", async (req, res) => {
     data: activity,
   });
 });
+
+// router.put("/:id", async (req, res)=>{
+//   const {id} = req.params;
+//   const {} = req.body()
+
+// })
 
 module.exports = router;

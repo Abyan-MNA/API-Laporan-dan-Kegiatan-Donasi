@@ -5,11 +5,11 @@ const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
-    throw new Error("Membutuhkan JWT access token");
+    return res.status(401).json({ message: "Membutuhkan JWT access token" });
   }
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
-      throw new Error("Verifikasi token gagal");
+      return res.status(401).json({ message: "Verifikasi token gagal" });
     }
     req.user = user; // Attach user info to request
   });

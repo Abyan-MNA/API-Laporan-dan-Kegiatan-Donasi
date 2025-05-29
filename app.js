@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const prisma = require("./services/db");
 const authenticateToken = require("./services/token");
 
 dotenv.config();
@@ -15,8 +14,7 @@ app.use(express.json());
 app.use("/kegiatan", authenticateToken, kegiatan);
 // app.use("/laporan", laporan);
 app.post("/", authenticateToken, async (req, res) => {
-  const kegiatan = await prisma.kegiatan.findMany();
-  res.status(200).json({
+  const kegiatan = res.status(200).json({
     message: "Welcome to the API",
     data: kegiatan,
   });
