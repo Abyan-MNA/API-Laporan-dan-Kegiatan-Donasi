@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+var cors = require('cors')
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const authenticateToken = require("./services/token");
@@ -11,6 +12,7 @@ const kegiatan = require("./routes/kegiatan");
 // const laporan = require("./routes/laporan");
 
 app.use(express.json());
+app.use(cors())
 app.use("/kegiatan", authenticateToken, kegiatan);
 // app.use("/laporan", laporan);
 app.post("/", authenticateToken, async (req, res) => {
