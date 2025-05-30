@@ -18,7 +18,7 @@ const authenticateToken = async (req, res, next) => {
     }
   }
   catch (error) {
-    console.error("Galat/error memverifikasi token:", err.message);
+    console.error("Galat/error memverifikasi token:", error.message);
     return res.status(500).json({ message: "Gagal memverifikasi token" })
   }
   next();
