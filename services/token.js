@@ -14,8 +14,8 @@ const authenticateToken = async (req, res, next) => {
       },
     });
 
-    if (response.data.valid) {
-      req.user = response.data.user;
+    if (response.data.success) {
+      req.user = response.data.data;
       next();
     } else {
       return res.status(403).json({ message: "Token tidak valid/sah" });
@@ -23,7 +23,10 @@ const authenticateToken = async (req, res, next) => {
   }
   catch (error) {
     console.error("Galat/error memverifikasi token:", error.message);
-    return res.status(500).json({ message: "Gagal memverifikasi token" })
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      return res.status(401).json({ message: "Token sudah kadaluarsa, silahkan login lagi di https://donation-api-auth.vercel.app/auth/login" });  
+    }
+    return res.status(500).json({ message: "Gagal memverifikasi token" });
   }
   next();
 };
