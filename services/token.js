@@ -8,7 +8,11 @@ const authenticateToken = async (req, res, next) => {
     return res.status(401).json({ message: "Akses token dibutuhkan. Silahkan login dengan metode POST https://donation-api-auth.vercel.app/auth/login untuk mendapatkan token" });
   }
   try {
-    const response = await axios.post('https://donation-api-auth.vercel.app/auth/verify-token', {token});
+    const response = await axios.get('https://donation-api-auth.vercel.app/auth/verify-token', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (response.data.valid) {
       req.user = response.data.user;
