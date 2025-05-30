@@ -12,7 +12,7 @@ const kegiatan = require("./routes/kegiatan");
 // const laporan = require("./routes/laporan");
 
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 app.use("/kegiatan", authenticateToken, kegiatan);
 // app.use("/laporan", laporan);
 app.post("/", authenticateToken, async (req, res) => {
