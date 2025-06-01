@@ -10,7 +10,9 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "test": "node trailblazer-clorinde-server.js"
+    "test": "node trailblazer-clorinde-server.js",
+    "postinstall": "prisma generate",
+    "start": "node trailblazer-clorinde-server.js"
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",
