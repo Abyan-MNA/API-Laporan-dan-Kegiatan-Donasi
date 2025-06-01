@@ -1,4 +1,4 @@
-const prisma = require("./db");
+const { prisma } = require("../load/database");
 
 const getActivities = async (id = undefined) => {
   let activities;

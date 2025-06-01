@@ -1,64 +1,49 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_LOAD_FILE")
 }
-model Kegiatan {
+
+model kegiatan {
+  id                 Int                  @id @default(autoincrement())
+  judul              String
+  deskripsi          String?
+  lokasi             String?
+  tanggal_mulai      DateTime
+  tanggal_selesai    DateTime?
+  status             String               @default("draft")
+  laporan_distribusi laporan_distribusi[]
+  laporan_donasi     laporan_donasi[]
+}
+
+model laporan_distribusi {
+  id                 Int       @id @default(autoincrement())
+  distribusiId       Int
+  penerima           String
+  tanggal_distribusi DateTime
+  metode_distribusi  String
+  status_konfirmasi  String    @default("pending")
+  catatan            String?
+  kegiatanId         Int?
+  kegiatan           kegiatan? @relation(fields: [kegiatanId], references: [id])
+
+  @@index([kegiatanId], map: "laporan_distribusi_kegiatanId_fkey")
+}
+
+model laporan_donasi {
   id             Int       @id @default(autoincrement())
-  judul          String
-  deskripsi      String?
-  lokasi         String?
-  tanggalMulai   DateTime  @map("tanggal_mulai")
-  tanggalSelesai DateTime? @map("tanggal_selesai")
-  status         String    @default("draft")
+  donasiId       Int
+  donaturId      String
+  tanggal_donasi DateTime
+  jumlah         Decimal?
+  jenis_donasi   String
+  status         String    @default("pending")
+  bukti_url      String?
+  kegiatanId     Int?
+  kegiatan       kegiatan? @relation(fields: [kegiatanId], references: [id])
 
-  // Relations
-  laporanDonasi         LaporanDonasi[]        @relation("KegiatanDonasi")
-  laporanDistribusi     LaporanDistribusi[]    @relation("KegiatanDistribusi")
-
-  @@map("kegiatan")
-}
-
-/// Modul 4: Laporan Donasi
-model LaporanDonasi {
-  id            Int       @id @default(autoincrement())
-  donasiId      Int
-  donaturId     String
-  tanggalDonasi DateTime  @map("tanggal_donasi")
-  jumlah        Decimal?
-  jenisDonasi   String    @map("jenis_donasi")
-  status        String    @default("pending")
-  buktiUrl      String?   @map("bukti_url")
-
-  // Optional relation to kegiatan
-  kegiatanId    Int?
-  kegiatan      Kegiatan? @relation("KegiatanDonasi", fields: [kegiatanId], references: [id])
-
-  @@map("laporan_donasi")
-}
-
-/// Modul 4: Laporan Distribusi
-model LaporanDistribusi {
-  id                Int         @id @default(autoincrement())
-  distribusiId      Int
-  penerima          String
-  tanggalDistribusi DateTime    @map("tanggal_distribusi")
-  metodeDistribusi  String      @map("metode_distribusi")
-  statusKonfirmasi  String      @default("pending") @map("status_konfirmasi")
-  catatan           String?
-
-  // Optional relation to kegiatan
-  kegiatanId        Int?
-  kegiatan          Kegiatan?   @relation("KegiatanDistribusi", fields: [kegiatanId], references: [id])
-
-  @@map("laporan_distribusi")
+  @@index([kegiatanId], map: "laporan_donasi_kegiatanId_fkey")
 }

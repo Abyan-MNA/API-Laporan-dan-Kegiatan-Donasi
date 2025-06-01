@@ -1,4 +1,11 @@
 .env
+
 node_modules
-/generated/prisma
+
 prisma/migrations
+/generated/prisma
+
+*.kachina
+!/load/clorinde.trailblazer.kachina
+
+*.journal

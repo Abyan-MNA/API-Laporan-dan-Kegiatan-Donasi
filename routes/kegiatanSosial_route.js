@@ -1,6 +1,6 @@
 const express = require("express");
-const router = express.Router();
-const prisma = require("../services/db");
+const activity_info = express.Router();
+const { prisma } = require("../load/database");
 const {
   getActivities,
   cekActivitiesId,
@@ -8,9 +8,10 @@ const {
   createActivities,
   updateActivities,
   updateActivityPartial,
-} = require("../services/activities");
+} = require("../services/kegiatanSosial");
+const { authorizeRole } = require("../middleware/authMiddleware");
 
-router.get("/", async (req, res) => {
+activity_info.get("/", async (req, res) => {
   try {
     const activities = await getActivities();
     return res.status(200).json({
@@ -24,7 +25,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+activity_info.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const cekId = await cekActivitiesId(id);
@@ -40,7 +41,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+activity_info.post("/", authorizeRole(["admin", "volunteer"]), async (req, res) => {
   try {
     const data = req.body;
     const newActivity = await createActivities(data);
@@ -55,7 +56,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+activity_info.delete("/:id", authorizeRole(["admin"]), async (req, res) => {
   try {
     const { id } = req.params;
     const cekId = await cekActivitiesId(id);
@@ -71,7 +72,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+activity_info.put("/:id", authorizeRole(["admin", "volunteer"]), async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
@@ -87,7 +88,7 @@ router.put("/:id", async (req, res) => {
     });
   }
 });
-router.patch("/:id", async (req, res) => {
+activity_info.patch("/:id", authorizeRole(["admin", "volunteer"]), async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
@@ -104,4 +105,4 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = activity_info;

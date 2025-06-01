@@ -1,31 +1,24 @@
 {
-  "name": "api-laporan-dan-kegiatan-donasi",
-  "version": "1.0.0",
-  "description": "```bash npm install ```",
+  "name": "api-laporan-kegiatan-sosial",
+  "version": "1446.12.0",
+  "description": "Project",
+  "keywords": [
+    "project"
+  ],
+  "license": "BSL-1.0",
+  "author": "",
+  "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "prisma generate"
+    "test": "node trailblazer-clorinde-server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Abyan-MNA/API-Laporan-dan-Kegiatan-Donasi.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Abyan-MNA/API-Laporan-dan-Kegiatan-Donasi/issues"
-  },
-  "homepage": "https://github.com/Abyan-MNA/API-Laporan-dan-Kegiatan-Donasi#readme",
   "dependencies": {
     "@prisma/client": "^6.8.2",
     "axios": "^1.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
+    "mysql": "^2.18.1",
     "prisma": "^6.8.2"
   }
 }
