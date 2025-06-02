@@ -46,16 +46,25 @@ const getSummaryDonateBySocialActID = async (id = undefined, page = 1, limit_per
 
 // Create summary donate in social activity
 const createSummaryDonateInSocialAct = async (data) => {
-  const { donasiId, donaturId, tanggal_donasi, jumlah, jenis_donasi, status = "accepted", bukti_url = "LANGSUNG/JUST QUICK", kegiatanId } = data;
+  let { donasiId, donaturId, tanggal_donasi, jumlah, jenis_donasi, status = "accepted", bukti_url = "LANGSUNG/JUST QUICK", kegiatanId } = data;
   if (!tanggal_donasi) {
     throw new AppError("Tanggal donasi harus diisi / Donate date must be provided", 400);
   }
+  donasiId = parseInt(donasiId);
+  donaturId = String(donaturId);
+  jumlah = parseFloat(jumlah);
+  tanggal_donasi = new Date(tanggal_donasi);
+  kegiatanId = parseInt(kegiatanId);
   const newSumDonateSocialAct = await prisma.laporan_donasi.create({
     data: {
-      donasiId, donaturId,
+      donasiId,
+      donaturId,
       tanggal_donasi,
-      jumlah, jenis_donasi,
-      status, bukti_url, kegiatanId
+      jumlah,
+      jenis_donasi,
+      status,
+      bukti_url,
+      kegiatanId
     }
   });
   if (!newSumDonateSocialAct) {
@@ -65,7 +74,7 @@ const createSummaryDonateInSocialAct = async (data) => {
 };
 // Delete while wrong or something else
 const deleteSummaryDonate = async (id) => {
-  const stmtDeleteSummaryDonate = await prisma.laporan_donasi.delete({ where:  {id: id} });
+  const stmtDeleteSummaryDonate = await prisma.laporan_donasi.delete({ where:  {id: parseInt(id)} });
   if (!stmtDeleteSummaryDonate) {
     throw new AppError("Gagal menghapus laporan donasi / Failed delete donate summary/report", 500);
   }

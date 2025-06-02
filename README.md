@@ -32,7 +32,7 @@ DATABASE_URL=${DB_SERVER_PROVIDER}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_P
 DATABASE_LOAD_FILE=file:${DB_FILE}
 ```
 
-Gunakan `.env.example`, salin ke `.env`, dan konfigurasi menyesuaikan server yang akan digunakan.
+Gunakan `.env.example`, salin ke `.env`, dan konfigurasi menyesuaikan server yang akan digunakan. Untuk deploy semisal Vercel, konfigurasi dapat menyesuaikan dengan provider delopyment yang digunakan.
 
 ## Pemasangan
 Diperlukan _Node JS_ versi 14 LTS ke atas dan _Node Package Manager_. Untuk install:
@@ -40,7 +40,7 @@ Diperlukan _Node JS_ versi 14 LTS ke atas dan _Node Package Manager_. Untuk inst
 npm install
 ```
 
-Setelah itu, migrasi, generasikan (_generate_), dan _push_ data
+Setelah itu, migrasi, generasikan (_generate_), maupun _push_ data
 ```sh
 # prisma migrate
 npx prisma migrate dev # Untuk dalam pengembangan atau development
@@ -111,5 +111,216 @@ Akses endpoint yang hanya memasukkan maupun memutakhirkan (update) data (mode Tr
 ### User
 Akses endpoint yang hanya bisa melihat data (mode Uthabiti Kachina)
 
+## Status Error
+### Status error autentikasi
+401 Unauthorized -- token tidak ada
+```json
+{
+  "message": "Akses tidak diizinkan / Forbidden access. - Please login at https://donation-api-auth.vercel.app/auth/login with username and password in JSON body request (if use API with POST HTTP method) or integrated website for get token access"
+}
+```
+
+401 Unauthorized -- token kadaluarsa / tidak valid
+```json
+{
+  "message": "Token kadaluarsa / Expired token -- Please login again at https://donation-api-auth.vercel.app/auth/login for get token"
+}
+```
+
+403 Forbidden -- tidak bisa menggunakan akses / akses ditolak
+```json
+{
+  "status_info": "Error",
+  "message": "Sayangnya tidak mendapat akses / Unfortunely, don't have access"
+}
+```
+
+403 Forbidden -- hak akses khusus untuk tertentu
+```json
+{ 
+  "status_info": "Error",
+  "message": "Sayangnya akses ini hanya untuk admin atau ... / Unfortunely, this access only for admin or ..."
+}
+```
+
 ## Endpoint
-Masih belum uji coba
+
+### Menguji role
+
+- `/test-trailblazer-mode`
+
+  Dengan token bearer seperti ini: <br/>
+  `Authorization: Bearer YOUR_TOKEN_FROM_AUTH`
+
+  Kode status respon:
+  - 200: Tampilan halaman
+  - 401: Lihat di bagian status error autentikasi
+
+- `/test-clorinde-mode`
+
+  Dengan token bearer seperti ini: <br/>
+  `Authorization: Bearer YOUR_TOKEN_FROM_AUTH`
+
+  Kode status respon:
+  - 200: Tampilan halaman
+  - 403: Lihat di bagian status error autentikasi
+  - 401: Lihat di bagian status error autentikasi
+
+
+### Laporan
+
+- Header yang sering digunakan:
+  - `Authorization: Bearer YOUR_TOKEN_FROM_AUTH`
+
+- Kueri yang sering digunakan (untuk metode HTTP `GET`):
+  - `page`: Mengambil halaman laporan (bawahan: 1)
+  - `limit_per_page`: Limit rekaman data per halaman (bawahan: 1000)
+
+- `GET /data-laporan/donasi/laporan` (membutuhkan token autentikasi)
+  
+  Kode status respon:
+  - 200: Contoh didapatkan
+    ```json
+    {
+      "status_info": "OK",
+      "page": 1,
+      "limit": 1000,
+      "message": "Laporan donasi / Summary report - Maybe too long if not split by limit column per page",
+      "data": [
+        {
+          "id": 1,
+          "donasiId": 44,
+          "donaturId": "25",
+          "tanggal_donasi": "2025-05-28T13:35:52.000Z",
+          "jumlah": "72",
+          "jenis_donasi": "barang",
+          "status": "accepted",
+          "bukti_url": null,
+          "kegiatanId": null
+        },
+        {
+          "...": "..."
+        }    
+      ]
+    }
+    ```
+  - 401: Lihat di bagian status error
+  - 500: FUNCTION_SERVERLESS_ERROR / Internal server error
+- `GET /data-laporan/donasi/donate_id/:donate_id` (membutuhkan token autentikasi)
+
+  `:donate_id` adalah parameter berdasarkan `donateId`
+  
+  Kode status respon:
+  - 200: Contoh didapatkan
+    ```json
+    {
+      "status_info": "OK",
+      "page": 1,
+      "limit": 1000,
+      "message": "Laporan donasi / Summary report - Maybe too long if not split by limit column per page",
+      "data": [
+        {
+          "id": 1,
+          "donasiId": 44,
+          "donaturId": "25",
+          "tanggal_donasi": "2025-05-28T13:35:52.000Z",
+          "jumlah": "72",
+          "jenis_donasi": "barang",
+          "status": "accepted",
+          "bukti_url": null,
+          "kegiatanId": null
+        },
+        {
+          "...": "..."
+        }    
+      ]
+    }
+    ```
+  - 401: Lihat di bagian status error
+  - 500: FUNCTION_SERVERLESS_ERROR / Internal server error
+
+- `GET /data-laporan/donasi/kegiatan/:id` (membutuhkan token autentikasi)
+
+  `:id` adalah parameter berdasarkan `kegiatanId`
+  
+  Kode status respon:
+  - 200: Contoh didapatkan
+    ```json
+    {
+      "status_info": "OK",
+      "page": 1,
+      "limit": 1000,
+      "message": "Laporan donasi / Summary report - Maybe too long if not split by limit column per page",
+      "data": [
+        {
+          "id": 1,
+          "donasiId": 44,
+          "donaturId": "25",
+          "tanggal_donasi": "2025-05-28T13:35:52.000Z",
+          "jumlah": "72",
+          "jenis_donasi": "barang",
+          "status": "accepted",
+          "bukti_url": null,
+          "kegiatanId": null
+        },
+        {
+          "...": "..."
+        }    
+      ]
+    }
+    ```
+  - 401: Lihat di bagian status error
+  - 500: FUNCTION_SERVERLESS_ERROR / Internal server error
+
+- `POST /data-laporan/donasi/` (membutuhkan token akses dan role admin, volunteer)
+
+  Permintaan berupa skema JSON:
+  ```json
+  {
+    "donasiId": Int,
+    "donaturId": String,
+    "tanggal_donasi": DateTime,
+    "jumlah": Int/Float,
+    "jenis_donasi": String,
+    "status": String,
+    "bukti_url": String,
+    "kegiatanId": Int
+  }
+  ```
+  Contoh seperti ini:
+  ```json
+  {
+    "donasiId": 1,
+    "donaturId": 1,
+    "tanggal_donasi": "2025-06-01T00:00:00Z",
+    "jumlah": 1,
+    "jenis_donasi": "barang",
+    "status": "accepted",
+    "bukti_url": null,
+    "kegiatanId": null
+  }
+  ```
+
+  Respon dari server:
+  - 200: Contoh hasil dalam bentuk JSON
+    ```json
+    {
+    "status_info": "OK;Sent",
+    "message": "Laporan donasi sudah ditambahkan / Donation summary/report has added",
+      "request_data": {
+          "id": 11,
+          "donasiId": 1,
+          "donaturId": "1",
+          "tanggal_donasi": "2025-06-01T00:00:00.000Z",
+          "jumlah": "1",
+          "jenis_donasi": "barang",
+          "status": "accepted",
+          "bukti_url": null,
+          "kegiatanId": null
+      }
+    }
+    ```
+  - 400: Ada bagian yang harus diisi
+  - 401: Token bermasalah
+  - 403: Tidak bisa karena hak akses untuk `admin` maupun `volunteer`
+  - 500: DATABASE_ERROR / Internal server error

@@ -1,8 +1,8 @@
-GET http://localhost:3000/
+GET /
 
 ###
 
-POST http://localhost:3000/kegiatan
+POST /kegiatan
 Content-Type: application/json
 
 {
@@ -13,16 +13,16 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/login
+POST /login
 
 
 ###
-POST  http://localhost:3000/
+POST  /
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 
 ###
 
-POST  http://localhost:3000/kegiatan
+POST  /data-kegiatan
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 Content-Type: application/json
 
@@ -35,15 +35,15 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/kegiatan/2e
+DELETE /data-kegiatan/2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 
 ###
-GET http://localhost:3000/kegiatan/3
+GET /data-kegiatan/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 
 ###
-PUT http://localhost:3000/kegiatan/3
+PUT /data-kegiatan/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 Content-Type: application/json
 
@@ -57,7 +57,7 @@ Content-Type: application/json
 }
 ###
 
-PATCH  http://localhost:3000/kegiatan/3
+PATCH  /data-kegiatan/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 Content-Type: application/json
 

@@ -50,12 +50,18 @@ const createSummaryDistInSocialAct = async (data) => {
   if (!tanggal_distribusi) {
     throw AppError("Tanggal donasi dapat diisi pada tanggal kegiatan / Donate date-time can fill with social activity date", 400);
   }
+  distribusiId = parseInt(distribusiId);
+  kegiatanId = parseInt(kegiatanId);
+  tanggal_distribusi = new Date(tanggal_distribusi);
   const newSumDistSocialAct = await prisma.laporan_distribusi.create({
     data: {
       distribusiId,
-      penerima, metode_distribusi,
-      tanggal_distribusi, status_konfirmasi,
-      catatan, kegiatanId
+      penerima,
+      metode_distribusi,
+      tanggal_distribusi,
+      status_konfirmasi,
+      catatan,
+      kegiatanId
     }
   });
   if (!newSumDistSocialAct) {
