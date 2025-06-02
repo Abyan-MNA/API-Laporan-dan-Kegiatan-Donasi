@@ -22,7 +22,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZ
 
 ###
 
-POST  /data-kegiatan
+POST  /data-kegiatan-sosial
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 Content-Type: application/json
 
@@ -35,15 +35,15 @@ Content-Type: application/json
 }
 
 ###
-DELETE /data-kegiatan/2
+DELETE /data-kegiatan-sosial/2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 
 ###
-GET /data-kegiatan/3
+GET /data-kegiatan-sosial/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 
 ###
-PUT /data-kegiatan/3
+PUT /data-kegiatan-sosial/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 Content-Type: application/json
 
@@ -57,7 +57,7 @@ Content-Type: application/json
 }
 ###
 
-PATCH  /data-kegiatan/3
+PATCH  /data-kegiatan-sosial/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
 Content-Type: application/json
 
