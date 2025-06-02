@@ -32,8 +32,8 @@ const createActivities = async (data) => {
       judul,
       deskripsi,
       lokasi: lokasi ?? undefined,
-      tanggalMulai: new Date(tanggal_mulai),
-      tanggalSelesai: tanggal_selesai ? new Date(tanggal_selesai) : undefined,
+      tanggal_mulai: new Date(tanggal_mulai),
+      tanggal_selesai: tanggal_selesai ? new Date(tanggal_selesai) : undefined,
       status: status ?? undefined,
     },
   });
