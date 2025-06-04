@@ -324,3 +324,63 @@ Akses endpoint yang hanya bisa melihat data (mode Uthabiti Kachina)
   - 401: Token bermasalah
   - 403: Tidak bisa karena hak akses untuk `admin` maupun `volunteer`
   - 500: DATABASE_ERROR / Internal server error
+
+### Kegiatan
+
+> CATATAN: Gunakan autentikasi token. Lihat di [Github Repo: Rieko00/DonationAPI-Auth](https://github.com/Rieko00/DonationAPI-Auth) untuk cara autentikasi.
+
+- `POST  /data-kegiatan-sosial`
+  
+  Dalam isian contoh untuk _request body_ dalam bentuk JSON (`Content-Type: application/json`):
+  ```json
+  {
+    "judul": "Kegiatan Pertemuan", // String
+    "deskripsi": "Deskripsi kegiatan pertemuan", // String
+    "tanggal_mulai": "2023-10-01", // Date
+    "tanggal_selesai": "2023-10-05", // Date
+    "lokasi": "Lokasi Pertemuan" // String
+  }
+  ```
+
+- `GET /data-kegatan-sosial/:id`
+  
+  `:id` adalah parameter di mana berdasarkan ID di dalam tabel `kegiatan` (lihat di skema database).
+  Jika ingin semuanya, tinggal hapus paramter `:id` (belum teruji).
+
+- `PUT /data-kegiatan-sosial/:id` (Isian _request body_ **harus** lengkap)
+
+  `:id` = parameter ID dalam tabel `kegiatan`.
+
+  Dengan isian contoh untuk _request body_ dalam bentuk JSON (`Content-Type: application/json`):
+  ```json
+  {
+    "judul": "Kegiatan Pertemuan", // String
+    "deskripsi": "Deskripsi kegiatan pertemuan", // String
+    "tanggal_mulai": "2023-10-01", // Date
+    "tanggal_selesai": "2023-10-05", // Date
+    "lokasi": "Lokasi Pertemuan", // String
+    "status": "draft" // String: [ "draft", "accepted", "rejected" ]
+  }
+  ```
+
+- `PUT /data-kegiatan-sosial/:id` (Untuk update sebagian kolom rekaman data)
+
+  `:id` = parameter ID dalam tabel `kegiatan`.
+
+  Dengan isian contoh untuk _request body_ dalam bentuk JSON (`Content-Type: application/json`):
+  ```json
+  {
+    "judul": "Kegiatan Pertemuan", // String
+    "deskripsi": "Deskripsi kegiatan pertemuan", // String
+    "tanggal_mulai": "2023-10-01", // Date
+    "tanggal_selesai": "2023-10-05", // Date
+    "lokasi": "Lokasi Pertemuan", // String
+    "status": "draft" // String: [ "draft", "accepted", "rejected" ]
+  }
+  ```
+
+- `DELETE /data-kegiatan-sosial/:id`
+
+  `:id` = parameter ID dalam tabel `kegiatan`.
+
+  CATATAN: **TIDAK DAPAT DIURUNGKAN. PASTIKAN BENAR-BENAR YAKIN**
