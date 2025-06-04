@@ -10,6 +10,7 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
+    "postinstall": "npx prisma generate & prisma generate",
     "test": "node trailblazer-clorinde-server.js"
   },
   "dependencies": {
