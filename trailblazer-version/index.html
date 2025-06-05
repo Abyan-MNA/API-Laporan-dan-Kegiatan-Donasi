@@ -1,7 +1,382 @@
 <!DOCTYPE html>
-<html lang="xx" data-char="Trailblazer; Clorinde" data-from-char="Honkai: Star Rail; Genshin Impact">
+<html lang="id" data-char="Trailblazer; Clorinde" data-from-char="Honkai: Star Rail; Genshin Impact">
 <head>
-  <title>Welcome...</title>
+  <meta charset="utf-8" />
+  <title>Software: API Laporan dan Kegiatan Sosial (Untuk Belajar)</title>
+  <meta name="author" content="Abyan, M. N. A.; " />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=yes" />
+  <link rel="license" href="https://www.boost.org/LICENSE_1_0.txt" />
+  <link rel="preload" as="style" href="/kachina/css/kachina.css"/>
+  <link href="/kachina/css/kachina.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+  <div id="MainHomepage" class="background-set">
+    <div class="sn-center mn-lr-900px">
+      <div class="pd-16px">
+        <p style="font-size: x-large;">API Laporan Donasi dan Kegiatan Sosial</p>
+        <p>
+          <a href="#DocumentationInfo"><i class="fa fa-arrow-down"></i> Lebih lanjut...</a> 
+          <a href="https://github.com/Abyan-MNA/API-Laporan-dan-Kegiatan-Donasi" target="_blank"><i class="fa-brand fa-github"></i> Lihat di Github</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div id="DocumentationInfo" class="mn-lr-1024px pd-24px">
+    <h1 id="api-laporan-donasi-dan-kegiatan-sosial">Dokumentasi dan Info</h1>
+    <p>Laporan donasi, distribusi, sekaligus kegiatan sosial. Untuk saat ini masih beta alias dapat digunakan dalam pengujian</p>
+    <p>Untuk contoh tautan:</p>
+    <pre><code class="language-plaintext">https://api-laporan-dan-kegiatan-donasi.vercel.app/
+    </code></pre>
+    <h2 id="konfigurasi">Konfigurasi</h2>
+    <p>Contoh konfigurasi dalam environment</p>
+    <pre><code class="language-properties"># API URL External
+EXT1_API_URL=
+EXT2_API_URL=
+
+# PORT Server
+PORT=3000 # Use port in not used by other server/software
+
+# MySQL/MariaDB/PostgreSQL/SQL Server may have scheme server
+DB_HOST=kachina.local # localhost , 127.0.0.254 , example.org or kachina.42.svr
+DB_USER=root # Maybe have user such as user
+DB_PASSWORD=Please don&#39;t show Uthabiti Kachina&#39;s passowrd or Castorice, Cipher, Clorinde, Neuvillette, Arlechino will shock you # Sensitive mode
+DB_SELECTED=Database_selected # Sensitive name in UNIX (UNIX-Like so) or Huwawei/Harmony based, BE CAREFUL 
+DB_PORT=3306 # Database Server PORT
+DB_SERVER_PROVIDER=mysql # Must be know such as mysql or postgresql
+
+# SQLite
+DB_FILE=../load/filedatabase.kachina # File such as kachina.databse , database.db , or db.sqlite - BE CAREFUL
+
+# Load Database
+DATABASE_URL=${DB_SERVER_PROVIDER}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_SELECTED}
+DATABASE_LOAD_FILE=file:${DB_FILE}
+    </code></pre>
+    <p>Gunakan <code>.env.example</code>, salin ke <code>.env</code>, dan konfigurasi menyesuaikan server yang akan digunakan. Untuk deploy semisal Vercel, konfigurasi dapat menyesuaikan dengan provider delopyment yang digunakan.</p>
+    <h2 id="pemasangan">Pemasangan</h2>
+    <p>Diperlukan <em>Node JS</em> versi 14 LTS ke atas dan <em>Node Package Manager</em>. Untuk install:</p>
+    <pre><code class="language-sh">npm install
+    </code></pre>
+    <p>Setelah itu, migrasi, generasikan (<em>generate</em>), maupun <em>push</em> data</p>
+    <pre><code class="language-sh"># prisma migrate
+npx prisma migrate dev # Untuk dalam pengembangan atau development
+npx prisma migrate deploy # Untuk produksi (production/staging)
+npx prisma migrate reset # Reset semua database menyesuaikan skema database
+# prisma generate
+npx prisma generate
+# prisma db push
+npx prisma db push
+    </code></pre>
+    <p>Anda dapat konfigurasi <code>packages.json</code>, pasang modul/paket dari NPM, bahkan menjalankan dengan <code>npm run test</code></p>
+    <h2 id="skema-database">Skema database</h2>
+    <p>Skema basis data dalam bentuk berkas <code>schema.prisma</code> seperti ini:</p>
+    <pre><code class="language-prisma">...
+
+model kegiatan {
+  id                 Int                  @id @default(autoincrement())
+  judul              String
+  deskripsi          String?
+  lokasi             String?
+  tanggal_mulai      DateTime
+  tanggal_selesai    DateTime?
+  status             String               @default(&quot;draft&quot;)
+  laporan_distribusi laporan_distribusi[]
+  laporan_donasi     laporan_donasi[]
+}
+
+model laporan_distribusi {
+  id                 Int       @id @default(autoincrement())
+  distribusiId       Int
+  penerima           String
+  tanggal_distribusi DateTime
+  metode_distribusi  String
+  status_konfirmasi  String    @default(&quot;pending&quot;)
+  catatan            String?
+  kegiatanId         Int?
+  kegiatan           kegiatan? @relation(fields: [kegiatanId], references: [id])
+
+  @@index([kegiatanId], map: &quot;laporan_distribusi_kegiatanId_fkey&quot;)
+}
+
+model laporan_donasi {
+  id             Int       @id @default(autoincrement())
+  donasiId       Int
+  donaturId      String
+  tanggal_donasi DateTime
+  jumlah         Decimal?
+  jenis_donasi   String
+  status         String    @default(&quot;pending&quot;)
+  bukti_url      String?
+  kegiatanId     Int?
+  kegiatan       kegiatan? @relation(fields: [kegiatanId], references: [id])
+
+  @@index([kegiatanId], map: &quot;laporan_donasi_kegiatanId_fkey&quot;)
+}
+    </code></pre>
+    <h2 id="authorization-role-endpoint"><em>Authorization Role Endpoint</em></h2>
+    <p>Lihat di <a href="https://github.com/Rieko00/DonationAPI-Auth?tab=readme-ov-file#1-registrasi-akun-baru">Github Repo: Rieko00/DonationAPI-Auth</a></p>
+    <h3 id="admin">Admin</h3>
+    <p>Akses endpoint yang tidak terbatas (mode Clorinde)</p>
+    <h3 id="volunteerrelawan"><em>Volunteer</em>/Relawan</h3>
+    <p>Akses endpoint yang hanya memasukkan maupun memutakhirkan (update) data (mode Trailblazer)</p>
+    <h3 id="user">User</h3>
+    <p>Akses endpoint yang hanya bisa melihat data (mode Uthabiti Kachina)</p>
+    <h2 id="status-error">Status Error</h2>
+    <h3 id="status-error-autentikasi">Status error autentikasi</h3>
+    <p>401 Unauthorized -- token tidak ada</p>
+    <pre><code class="language-json">{
+      &quot;message&quot;: &quot;Akses tidak diizinkan / Forbidden access. - Please login at https://donation-api-auth.vercel.app/auth/login with username and password in JSON body request (if use API with POST HTTP method) or integrated website for get token access&quot;
+    }
+    </code></pre>
+    <p>401 Unauthorized -- token kadaluarsa / tidak valid</p>
+    <pre><code class="language-json">{
+      &quot;message&quot;: &quot;Token kadaluarsa / Expired token -- Please login again at https://donation-api-auth.vercel.app/auth/login for get token&quot;
+    }
+    </code></pre>
+    <p>403 Forbidden -- tidak bisa menggunakan akses / akses ditolak</p>
+    <pre><code class="language-json">{
+      &quot;status_info&quot;: &quot;Error&quot;,
+      &quot;message&quot;: &quot;Sayangnya tidak mendapat akses / Unfortunely, don&#39;t have access&quot;
+    }
+    </code></pre>
+    <p>403 Forbidden -- hak akses khusus untuk tertentu</p>
+    <pre><code class="language-json">{ 
+      &quot;status_info&quot;: &quot;Error&quot;,
+      &quot;message&quot;: &quot;Sayangnya akses ini hanya untuk admin atau ... / Unfortunely, this access only for admin or ...&quot;
+    }
+    </code></pre>
+    <h2 id="endpoint">Endpoint</h2>
+    <h3 id="menguji-role">Menguji role</h3>
+    <ul>
+    <li><p><code>/test-trailblazer-mode</code></p>
+    <p>Dengan token bearer seperti ini: <br/>
+    <code>Authorization: Bearer YOUR_TOKEN_FROM_AUTH</code></p>
+    <p>Kode status respon:</p>
+    <ul>
+    <li>200: Tampilan halaman</li>
+    <li>401: Lihat di bagian status error autentikasi</li>
+    </ul>
+    </li>
+    <li><p><code>/test-clorinde-mode</code></p>
+    <p>Dengan token bearer seperti ini: <br/>
+    <code>Authorization: Bearer YOUR_TOKEN_FROM_AUTH</code></p>
+    <p>Kode status respon:</p>
+    <ul>
+    <li>200: Tampilan halaman</li>
+    <li>403: Lihat di bagian status error autentikasi</li>
+    <li>401: Lihat di bagian status error autentikasi</li>
+    </ul>
+    </li>
+    </ul>
+    <h3 id="laporan">Laporan</h3>
+    <ul>
+    <li><p>Header yang sering digunakan:</p>
+    <ul>
+    <li><code>Authorization: Bearer YOUR_TOKEN_FROM_AUTH</code></li>
+    </ul>
+    </li>
+    <li><p>Kueri yang sering digunakan (untuk metode HTTP <code>GET</code>):</p>
+    <ul>
+    <li><code>page</code>: Mengambil halaman laporan (bawahan: 1)</li>
+    <li><code>limit_per_page</code>: Limit rekaman data per halaman (bawahan: 1000)</li>
+    </ul>
+    </li>
+    <li><p><code>GET /data-laporan/donasi/laporan</code> (membutuhkan token autentikasi)</p>
+    <p>Kode status respon:</p>
+    <ul>
+    <li>200: Contoh didapatkan<pre><code class="language-json">{
+  &quot;status_info&quot;: &quot;OK&quot;,
+  &quot;page&quot;: 1,
+  &quot;limit&quot;: 1000,
+  &quot;message&quot;: &quot;Laporan donasi / Summary report - Maybe too long if not split by limit column per page&quot;,
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: 1,
+      &quot;donasiId&quot;: 44,
+      &quot;donaturId&quot;: &quot;25&quot;,
+      &quot;tanggal_donasi&quot;: &quot;2025-05-28T13:35:52.000Z&quot;,
+      &quot;jumlah&quot;: &quot;72&quot;,
+      &quot;jenis_donasi&quot;: &quot;barang&quot;,
+      &quot;status&quot;: &quot;accepted&quot;,
+      &quot;bukti_url&quot;: null,
+      &quot;kegiatanId&quot;: null
+    },
+    {
+      &quot;...&quot;: &quot;...&quot;
+    }    
+  ]
+}
+    </code></pre>
+    </li>
+    <li>401: Lihat di bagian status error</li>
+    <li>500: FUNCTION_SERVERLESS_ERROR / Internal server error</li>
+    </ul>
+    </li>
+    <li><p><code>GET /data-laporan/donasi/donate_id/:donate_id</code> (membutuhkan token autentikasi)</p>
+    <p><code>:donate_id</code> adalah parameter berdasarkan <code>donateId</code></p>
+    <p>Kode status respon:</p>
+    <ul>
+    <li>200: Contoh didapatkan<pre><code class="language-json">{
+  &quot;status_info&quot;: &quot;OK&quot;,
+  &quot;page&quot;: 1,
+  &quot;limit&quot;: 1000,
+  &quot;message&quot;: &quot;Laporan donasi / Summary report - Maybe too long if not split by limit column per page&quot;,
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: 1,
+      &quot;donasiId&quot;: 44,
+      &quot;donaturId&quot;: &quot;25&quot;,
+      &quot;tanggal_donasi&quot;: &quot;2025-05-28T13:35:52.000Z&quot;,
+      &quot;jumlah&quot;: &quot;72&quot;,
+      &quot;jenis_donasi&quot;: &quot;barang&quot;,
+      &quot;status&quot;: &quot;accepted&quot;,
+      &quot;bukti_url&quot;: null,
+      &quot;kegiatanId&quot;: null
+    },
+    {
+      &quot;...&quot;: &quot;...&quot;
+    }    
+  ]
+}
+    </code></pre>
+    </li>
+    <li>401: Lihat di bagian status error</li>
+    <li>500: FUNCTION_SERVERLESS_ERROR / Internal server error</li>
+    </ul>
+    </li>
+    <li><p><code>GET /data-laporan/donasi/kegiatan/:id</code> (membutuhkan token autentikasi)</p>
+    <p><code>:id</code> adalah parameter berdasarkan <code>kegiatanId</code></p>
+    <p>Kode status respon:</p>
+    <ul>
+  <li>200: Contoh didapatkan<pre><code class="language-json">{
+&quot;status_info&quot;: &quot;OK&quot;,
+&quot;page&quot;: 1,
+&quot;limit&quot;: 1000,
+&quot;message&quot;: &quot;Laporan donasi / Summary report - Maybe too long if not split by limit column per page&quot;,
+&quot;data&quot;: [
+    {
+      &quot;id&quot;: 1,
+      &quot;donasiId&quot;: 44,
+      &quot;donaturId&quot;: &quot;25&quot;,
+      &quot;tanggal_donasi&quot;: &quot;2025-05-28T13:35:52.000Z&quot;,
+      &quot;jumlah&quot;: &quot;72&quot;,
+      &quot;jenis_donasi&quot;: &quot;barang&quot;,
+      &quot;status&quot;: &quot;accepted&quot;,
+      &quot;bukti_url&quot;: null,
+      &quot;kegiatanId&quot;: null
+    },
+    {
+      &quot;...&quot;: &quot;...&quot;
+    }    
+  ]
+}
+    </code></pre>
+    </li>
+    <li>401: Lihat di bagian status error</li>
+    <li>500: FUNCTION_SERVERLESS_ERROR / Internal server error</li>
+    </ul>
+    </li>
+    <li><p><code>POST /data-laporan/donasi/</code> (membutuhkan token akses dan role admin, volunteer)</p>
+    <p>Permintaan berupa skema JSON:</p>
+    <pre><code class="language-json">{
+&quot;donasiId&quot;: Int,
+&quot;donaturId&quot;: String,
+&quot;tanggal_donasi&quot;: DateTime,
+&quot;jumlah&quot;: Int/Float,
+&quot;jenis_donasi&quot;: String,
+&quot;status&quot;: String,
+&quot;bukti_url&quot;: String,
+&quot;kegiatanId&quot;: Int
+}
+    </code></pre>
+    <p>Contoh seperti ini:</p>
+    <pre><code class="language-json">{
+  &quot;donasiId&quot;: 1,
+  &quot;donaturId&quot;: 1,
+  &quot;tanggal_donasi&quot;: &quot;2025-06-01T00:00:00Z&quot;,
+  &quot;jumlah&quot;: 1,
+  &quot;jenis_donasi&quot;: &quot;barang&quot;,
+  &quot;status&quot;: &quot;accepted&quot;,
+  &quot;bukti_url&quot;: null,
+  &quot;kegiatanId&quot;: null
+}
+    </code></pre>
+    <p>Respon dari server:</p>
+    <ul>
+    <li>200: Contoh hasil dalam bentuk JSON<pre><code class="language-json">{
+&quot;status_info&quot;: &quot;OK;Sent&quot;,
+&quot;message&quot;: &quot;Laporan donasi sudah ditambahkan / Donation summary/report has added&quot;,
+  &quot;request_data&quot;: {
+      &quot;id&quot;: 11,
+      &quot;donasiId&quot;: 1,
+      &quot;donaturId&quot;: &quot;1&quot;,
+      &quot;tanggal_donasi&quot;: &quot;2025-06-01T00:00:00.000Z&quot;,
+      &quot;jumlah&quot;: &quot;1&quot;,
+      &quot;jenis_donasi&quot;: &quot;barang&quot;,
+      &quot;status&quot;: &quot;accepted&quot;,
+      &quot;bukti_url&quot;: null,
+      &quot;kegiatanId&quot;: null
+  }
+}
+    </code></pre>
+    </li>
+    <li>400: Ada bagian yang harus diisi</li>
+    <li>401: Token bermasalah</li>
+    <li>403: Tidak bisa karena hak akses untuk <code>admin</code> maupun <code>volunteer</code></li>
+    <li>500: DATABASE_ERROR / Internal server error</li>
+    </ul>
+    </li>
+    </ul>
+    <h3 id="kegiatan">Kegiatan</h3>
+    <blockquote>
+    <p>CATATAN: Gunakan autentikasi token. Lihat di <a href="https://github.com/Rieko00/DonationAPI-Auth">Github Repo: Rieko00/DonationAPI-Auth</a> untuk cara autentikasi.</p>
+    </blockquote>
+    <ul>
+    <li><p><code>POST  /data-kegiatan-sosial</code></p>
+    <p>Dalam isian contoh untuk <em>request body</em> dalam bentuk JSON (<code>Content-Type: application/json</code>):</p>
+    <pre><code class="language-json">{
+  &quot;judul&quot;: &quot;Kegiatan Pertemuan&quot;, // String
+  &quot;deskripsi&quot;: &quot;Deskripsi kegiatan pertemuan&quot;, // String
+  &quot;tanggal_mulai&quot;: &quot;2023-10-01&quot;, // Date
+  &quot;tanggal_selesai&quot;: &quot;2023-10-05&quot;, // Date
+  &quot;lokasi&quot;: &quot;Lokasi Pertemuan&quot; // String
+}
+    </code></pre>
+    </li>
+    <li><p><code>GET /data-kegatan-sosial/:id</code></p>
+    <p><code>:id</code> adalah parameter di mana berdasarkan ID di dalam tabel <code>kegiatan</code> (lihat di skema database).
+    Jika ingin semuanya, tinggal hapus paramter <code>:id</code> (belum teruji).</p>
+    </li>
+    <li><p><code>PUT /data-kegiatan-sosial/:id</code> (Isian <em>request body</em> <strong>harus</strong> lengkap)</p>
+    <p><code>:id</code> = parameter ID dalam tabel <code>kegiatan</code>.</p>
+    <p>Dengan isian contoh untuk <em>request body</em> dalam bentuk JSON (<code>Content-Type: application/json</code>):</p>
+    <pre><code class="language-json">{
+  &quot;judul&quot;: &quot;Kegiatan Pertemuan&quot;, // String
+  &quot;deskripsi&quot;: &quot;Deskripsi kegiatan pertemuan&quot;, // String
+  &quot;tanggal_mulai&quot;: &quot;2023-10-01&quot;, // Date
+  &quot;tanggal_selesai&quot;: &quot;2023-10-05&quot;, // Date
+  &quot;lokasi&quot;: &quot;Lokasi Pertemuan&quot;, // String
+  &quot;status&quot;: &quot;draft&quot; // String: [ &quot;draft&quot;, &quot;accepted&quot;, &quot;rejected&quot; ]
+}
+    </code></pre>
+    </li>
+    <li><p><code>PUT /data-kegiatan-sosial/:id</code> (Untuk update sebagian kolom rekaman data)</p>
+    <p><code>:id</code> = parameter ID dalam tabel <code>kegiatan</code>.</p>
+    <p>Dengan isian contoh untuk <em>request body</em> dalam bentuk JSON (<code>Content-Type: application/json</code>):</p>
+    <pre><code class="language-json">{
+  &quot;judul&quot;: &quot;Kegiatan Pertemuan&quot;, // String
+  &quot;deskripsi&quot;: &quot;Deskripsi kegiatan pertemuan&quot;, // String
+  &quot;tanggal_mulai&quot;: &quot;2023-10-01&quot;, // Date
+  &quot;tanggal_selesai&quot;: &quot;2023-10-05&quot;, // Date
+  &quot;lokasi&quot;: &quot;Lokasi Pertemuan&quot;, // String
+  &quot;status&quot;: &quot;draft&quot; // String: [ &quot;draft&quot;, &quot;accepted&quot;, &quot;rejected&quot; ]
+}
+    </code></pre>
+    </li>
+    <li><p><code>DELETE /data-kegiatan-sosial/:id</code></p>
+    <p><code>:id</code> = parameter ID dalam tabel <code>kegiatan</code>.</p>
+    <p>CATATAN: <strong>TIDAK DAPAT DIURUNGKAN. PASTIKAN BENAR-BENAR YAKIN</strong></p>
+    </li>
+    </ul>
+
+  </div>
 </body>
