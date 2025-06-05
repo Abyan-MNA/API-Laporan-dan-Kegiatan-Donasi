@@ -8,15 +8,22 @@
   <link rel="license" href="https://www.boost.org/LICENSE_1_0.txt" />
   <link rel="preload" as="style" href="/kachina/css/kachina.css"/>
   <link href="/kachina/css/kachina.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+    pre {
+      overflow-x: auto;
+      padding: 8px;
+      max-width: 100%;
+    }
+  </style>
 </head>
 <body>
   <div id="MainHomepage" class="background-set">
     <div class="sn-center mn-lr-900px">
-      <div class="pd-16px">
+      <div class="pd-16px" style="text-align: center; align-self: center;">
         <p style="font-size: x-large;">API Laporan Donasi dan Kegiatan Sosial</p>
         <p>
-          <a href="#DocumentationInfo"><i class="fa fa-arrow-down"></i> Lebih lanjut...</a> 
-          <a href="https://github.com/Abyan-MNA/API-Laporan-dan-Kegiatan-Donasi" target="_blank"><i class="fa-brand fa-github"></i> Lihat di Github</a>
+          <a href="#DocumentationInfo" class="kachina-button"><i class="fa fa-arrow-down"></i> Lebih lanjut...</a> 
+          <a href="https://github.com/Abyan-MNA/API-Laporan-dan-Kegiatan-Donasi" class="kachina-button" target="_blank"><i class="fa-brand fa-github"></i> Lihat di Github</a>
         </p>
       </div>
     </div>
@@ -124,25 +131,25 @@ model laporan_donasi {
     <h3 id="status-error-autentikasi">Status error autentikasi</h3>
     <p>401 Unauthorized -- token tidak ada</p>
     <pre><code class="language-json">{
-      &quot;message&quot;: &quot;Akses tidak diizinkan / Forbidden access. - Please login at https://donation-api-auth.vercel.app/auth/login with username and password in JSON body request (if use API with POST HTTP method) or integrated website for get token access&quot;
-    }
+  &quot;message&quot;: &quot;Akses tidak diizinkan / Forbidden access. - Please login at https://donation-api-auth.vercel.app/auth/login with username and password in JSON body request (if use API with POST HTTP method) or integrated website for get token access&quot;
+}
     </code></pre>
     <p>401 Unauthorized -- token kadaluarsa / tidak valid</p>
     <pre><code class="language-json">{
-      &quot;message&quot;: &quot;Token kadaluarsa / Expired token -- Please login again at https://donation-api-auth.vercel.app/auth/login for get token&quot;
-    }
+  &quot;message&quot;: &quot;Token kadaluarsa / Expired token -- Please login again at https://donation-api-auth.vercel.app/auth/login for get token&quot;
+}
     </code></pre>
     <p>403 Forbidden -- tidak bisa menggunakan akses / akses ditolak</p>
     <pre><code class="language-json">{
-      &quot;status_info&quot;: &quot;Error&quot;,
-      &quot;message&quot;: &quot;Sayangnya tidak mendapat akses / Unfortunely, don&#39;t have access&quot;
-    }
+  &quot;status_info&quot;: &quot;Error&quot;,
+  &quot;message&quot;: &quot;Sayangnya tidak mendapat akses / Unfortunely, don&#39;t have access&quot;
+}
     </code></pre>
     <p>403 Forbidden -- hak akses khusus untuk tertentu</p>
     <pre><code class="language-json">{ 
-      &quot;status_info&quot;: &quot;Error&quot;,
-      &quot;message&quot;: &quot;Sayangnya akses ini hanya untuk admin atau ... / Unfortunely, this access only for admin or ...&quot;
-    }
+  &quot;status_info&quot;: &quot;Error&quot;,
+  &quot;message&quot;: &quot;Sayangnya akses ini hanya untuk admin atau ... / Unfortunely, this access only for admin or ...&quot;
+}
     </code></pre>
     <h2 id="endpoint">Endpoint</h2>
     <h3 id="menguji-role">Menguji role</h3>
