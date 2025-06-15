@@ -359,7 +359,7 @@ Akses endpoint yang hanya bisa melihat data (mode Uthabiti Kachina)
     "tanggal_mulai": "2023-10-01", // Date
     "tanggal_selesai": "2023-10-05", // Date
     "lokasi": "Lokasi Pertemuan", // String
-    "status": "draft" // String: [ "draft", "accepted", "rejected" ]
+    "status": "draft" // String: [ "draft", "accepted", "selesai", "rejected" ]
   }
   ```
 
