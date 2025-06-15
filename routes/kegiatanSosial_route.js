@@ -11,7 +11,7 @@ const {
 } = require("../services/kegiatanSosial");
 const { authorizeRole } = require("../middleware/authMiddleware");
 
-activity_info.get("/", async (err, req, res) => {
+activity_info.get("/", async (req, res) => {
   try {
     const activities = await getActivities();
     return res.status(200).json({
@@ -25,7 +25,7 @@ activity_info.get("/", async (err, req, res) => {
   }
 });
 
-activity_info.get("/:id", async (err, req, res) => {
+activity_info.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const cekId = await cekActivitiesId(id);
@@ -41,7 +41,7 @@ activity_info.get("/:id", async (err, req, res) => {
   }
 });
 
-activity_info.post("/", authorizeRole(["admin", "volunteer"]), async (err, req, res) => {
+activity_info.post("/", authorizeRole(["admin", "volunteer"]), async (req, res) => {
   try {
     const data = req.body;
     const newActivity = await createActivities(data);
@@ -56,7 +56,7 @@ activity_info.post("/", authorizeRole(["admin", "volunteer"]), async (err, req, 
   }
 });
 
-activity_info.delete("/:id", authorizeRole(["admin"]), async (err, req, res) => {
+activity_info.delete("/:id", authorizeRole(["admin"]), async (req, res) => {
   try {
     const { id } = req.params;
     const cekId = await cekActivitiesId(id);
@@ -72,7 +72,7 @@ activity_info.delete("/:id", authorizeRole(["admin"]), async (err, req, res) => 
   }
 });
 
-activity_info.put("/:id", authorizeRole(["admin", "volunteer"]), async (err, req, res) => {
+activity_info.put("/:id", authorizeRole(["admin", "volunteer"]), async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
@@ -88,7 +88,7 @@ activity_info.put("/:id", authorizeRole(["admin", "volunteer"]), async (err, req
     });
   }
 });
-activity_info.patch("/:id", authorizeRole(["admin", "volunteer"]), async (err, req, res) => {
+activity_info.patch("/:id", authorizeRole(["admin", "volunteer"]), async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
