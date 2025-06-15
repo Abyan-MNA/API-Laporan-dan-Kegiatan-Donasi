@@ -12,8 +12,14 @@ const {
 const { authorizeRole } = require("../middleware/authMiddleware");
 
 activity_info.get("/", async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const activities = await getActivities();
+    if (id) {
+      const cekId = await cekActivitiesId(id);
+    } else {
+      const activities = await getActivities();
+    }
     return res.status(200).json({
       message: "Berhasil mengambil semua kegiatan",
       data: activities,
@@ -41,20 +47,24 @@ activity_info.get("/:id", async (req, res) => {
   }
 });
 
-activity_info.post("/", authorizeRole(["admin", "volunteer"]), async (req, res) => {
-  try {
-    const data = req.body;
-    const newActivity = await createActivities(data);
-    return res.status(201).json({
-      message: "Kegiatan berhasil ditambahkan",
-      data: newActivity,
-    });
-  } catch (err) {
-    return res.status(err.status).json({
-      message: err.message,
-    });
+activity_info.post(
+  "/",
+  authorizeRole(["admin", "volunteer"]),
+  async (req, res) => {
+    try {
+      const data = req.body;
+      const newActivity = await createActivities(data);
+      return res.status(201).json({
+        message: "Kegiatan berhasil ditambahkan",
+        data: newActivity,
+      });
+    } catch (err) {
+      return res.status(err.status).json({
+        message: err.message,
+      });
+    }
   }
-});
+);
 
 activity_info.delete("/:id", authorizeRole(["admin"]), async (req, res) => {
   try {
@@ -72,37 +82,45 @@ activity_info.delete("/:id", authorizeRole(["admin"]), async (req, res) => {
   }
 });
 
-activity_info.put("/:id", authorizeRole(["admin", "volunteer"]), async (req, res) => {
-  try {
-    const { id } = req.params;
-    const data = req.body;
-    const cekId = await cekActivitiesId(parseInt(id));
-    const updatedActivity = await updateActivities(cekId, data);
-    return res.status(200).json({
-      message: "Kegiatan berhasil diperbarui",
-      data: updatedActivity,
-    });
-  } catch (err) {
-    return res.status(err.status).json({
-      message: err.message,
-    });
+activity_info.put(
+  "/:id",
+  authorizeRole(["admin", "volunteer"]),
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const data = req.body;
+      const cekId = await cekActivitiesId(parseInt(id));
+      const updatedActivity = await updateActivities(cekId, data);
+      return res.status(200).json({
+        message: "Kegiatan berhasil diperbarui",
+        data: updatedActivity,
+      });
+    } catch (err) {
+      return res.status(err.status).json({
+        message: err.message,
+      });
+    }
   }
-});
-activity_info.patch("/:id", authorizeRole(["admin", "volunteer"]), async (req, res) => {
-  try {
-    const { id } = req.params;
-    const data = req.body;
-    const cekId = await cekActivitiesId(parseInt(id));
-    const updatedActivity = await updateActivityPartial(cekId, data);
-    return res.status(200).json({
-      message: "Kegiatan berhasil diperbarui",
-      data: updatedActivity,
-    });
-  } catch (err) {
-    return res.status(err.status).json({
-      message: err.message,
-    });
+);
+activity_info.patch(
+  "/:id",
+  authorizeRole(["admin", "volunteer"]),
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const data = req.body;
+      const cekId = await cekActivitiesId(parseInt(id));
+      const updatedActivity = await updateActivityPartial(cekId, data);
+      return res.status(200).json({
+        message: "Kegiatan berhasil diperbarui",
+        data: updatedActivity,
+      });
+    } catch (err) {
+      return res.status(err.status).json({
+        message: err.message,
+      });
+    }
   }
-});
+);
 
 module.exports = activity_info;
