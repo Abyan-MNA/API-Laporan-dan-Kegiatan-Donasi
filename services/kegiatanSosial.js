@@ -1,13 +1,18 @@
 const { prisma } = require("../load/database");
 
-const getActivities = async (id = undefined) => {
+const getActivities = async (id = undefined, limit = 10) => {
   let activities;
   if (id) {
     activities = await prisma.kegiatan.findUnique({
       where: { id: id },
     });
   } else {
-    activities = await prisma.kegiatan.findMany();
+    activities = await prisma.kegiatan.findMany({
+      take: limit,
+      orderBy: {
+        tanggal_mulai: "desc",
+      },
+    });
   }
   if (!activities) {
     const err = new Error("Gagal mendapatkan data kegiatan");
@@ -101,8 +106,8 @@ const updateActivities = async (id, data) => {
       judul,
       deskripsi,
       lokasi: lokasi ?? undefined,
-      tanggalMulai: new Date(tanggal_mulai),
-      tanggalSelesai: tanggal_selesai ? new Date(tanggal_selesai) : undefined,
+      tanggal_mulai: new Date(tanggal_mulai),
+      tanggal_selesai: tanggal_selesai ? new Date(tanggal_selesai) : undefined,
       status: status ?? undefined,
     },
   });
@@ -129,9 +134,9 @@ const updateActivityPartial = async (id, data) => {
   for (const field of allowedFields) {
     if (data[field] !== undefined) {
       if (field === "tanggal_mulai") {
-        updateData.tanggalMulai = new Date(data[field]);
+        updateData.tanggal_mulai = new Date(data[field]);
       } else if (field === "tanggal_selesai") {
-        updateData.tanggalSelesai = new Date(data[field]);
+        updateData.tanggal_selesai = new Date(data[field]);
       } else {
         updateData[field] = data[field];
       }

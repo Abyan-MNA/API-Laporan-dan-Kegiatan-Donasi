@@ -12,18 +12,22 @@ const {
 const { authorizeRole } = require("../middleware/authMiddleware");
 
 activity_info.get("/", async (req, res) => {
-  const { id } = req.params;
-
   try {
+    const id = req.query.id;
     if (id) {
       const cekId = await cekActivitiesId(id);
+      const activity = await getActivities(cekId);
+      return res.status(200).json({
+        message: "Berhasil mengambil kegiatan",
+        data: activity,
+      });
     } else {
       const activities = await getActivities();
+      return res.status(200).json({
+        message: "Berhasil mengambil semua kegiatan",
+        data: activities,
+      });
     }
-    return res.status(200).json({
-      message: "Berhasil mengambil semua kegiatan",
-      data: activities,
-    });
   } catch (err) {
     return res.status(err.status).json({
       message: err.message,
@@ -31,21 +35,22 @@ activity_info.get("/", async (req, res) => {
   }
 });
 
-activity_info.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const cekId = await cekActivitiesId(id);
-    const activity = await getActivities(cekId);
-    return res.status(200).json({
-      message: "Berhasil mengambil kegiatan",
-      data: activity,
-    });
-  } catch (err) {
-    return res.status(err.status).json({
-      message: err.message,
-    });
-  }
-});
+// activity_info.get("/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     console.log("ID Kegiatan:", id);
+//     const cekId = await cekActivitiesId(id);
+//     const activity = await getActivities(cekId);
+//     return res.status(200).json({
+//       message: "Berhasil mengambil kegiatan",
+//       data: activity,
+//     });
+//   } catch (err) {
+//     return res.status(err.status).json({
+//       message: err.message,
+//     });
+//   }
+// });
 
 activity_info.post(
   "/",
@@ -66,9 +71,9 @@ activity_info.post(
   }
 );
 
-activity_info.delete("/:id", authorizeRole(["admin"]), async (req, res) => {
+activity_info.delete("/", authorizeRole(["admin"]), async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.query.id;
     const cekId = await cekActivitiesId(id);
     const activity = await deleteActivities(cekId);
     return res.status(200).json({
@@ -83,12 +88,14 @@ activity_info.delete("/:id", authorizeRole(["admin"]), async (req, res) => {
 });
 
 activity_info.put(
-  "/:id",
+  "/",
   authorizeRole(["admin", "volunteer"]),
   async (req, res) => {
     try {
-      const { id } = req.params;
+      const id = req.query.id;
       const data = req.body;
+      console.log("ID Kegiatan:", id);
+      console.log("Data yang diterima:", data);
       const cekId = await cekActivitiesId(parseInt(id));
       const updatedActivity = await updateActivities(cekId, data);
       return res.status(200).json({
@@ -103,11 +110,11 @@ activity_info.put(
   }
 );
 activity_info.patch(
-  "/:id",
+  "/",
   authorizeRole(["admin", "volunteer"]),
   async (req, res) => {
     try {
-      const { id } = req.params;
+      const id = req.query.id;
       const data = req.body;
       const cekId = await cekActivitiesId(parseInt(id));
       const updatedActivity = await updateActivityPartial(cekId, data);
