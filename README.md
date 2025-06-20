@@ -342,12 +342,12 @@ Akses endpoint yang hanya bisa melihat data (mode Uthabiti Kachina)
   }
   ```
 
-- `GET /data-kegatan-sosial/:id`
+- `GET /data-kegatan-sosial/?id=:id`
   
   `:id` adalah parameter di mana berdasarkan ID di dalam tabel `kegiatan` (lihat di skema database).
   Jika ingin semuanya, tinggal hapus paramter `:id` (belum teruji).
 
-- `PUT /data-kegiatan-sosial/:id` (Isian _request body_ **harus** lengkap)
+- `PUT /data-kegiatan-sosial/?id=:id` (Isian _request body_ **harus** lengkap)
 
   `:id` = parameter ID dalam tabel `kegiatan`.
 
@@ -363,7 +363,7 @@ Akses endpoint yang hanya bisa melihat data (mode Uthabiti Kachina)
   }
   ```
 
-- `PUT /data-kegiatan-sosial/:id` (Untuk update sebagian kolom rekaman data)
+- `PUT /data-kegiatan-sosial/?id=:id` (Untuk update sebagian kolom rekaman data)
 
   `:id` = parameter ID dalam tabel `kegiatan`.
 
@@ -379,8 +379,8 @@ Akses endpoint yang hanya bisa melihat data (mode Uthabiti Kachina)
   }
   ```
 
-- `DELETE /data-kegiatan-sosial/:id`
+- `DELETE /data-kegiatan-sosial/?id=:id`
 
-  `:id` = parameter ID dalam tabel `kegiatan`.
+  `:id` = kueri ID kegiatan yang sudah ada di dalam tabel kegiatan.
 
   CATATAN: **TIDAK DAPAT DIURUNGKAN. PASTIKAN BENAR-BENAR YAKIN**
