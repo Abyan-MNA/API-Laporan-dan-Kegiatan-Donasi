@@ -1,68 +1,62 @@
-GET /
+@host = http://localhost:3000
+@hostprod = https://api-laporan-dan-kegiatan-donasi.vercel.app
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ6YWVuc0BnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc0OTUzMDAyMSwiZXhwIjoxNzQ5NTMzNjIxfQ.oX8HETzLmxGcgjxd2uL0dSt2Hg95276w9_B-IAhv-dI
+@tokenadmin = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoiemFlbm5ubnNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzUwMzI3NTkxLCJleHAiOjE3NTA5MzIzOTF9.y4OzB3keDGLVNlAHp0Ll9lBuSWKIqLA1LfZSGSA6H_g
+GET {{host}}/data-kegiatan-sosial
 
-###
-
-POST /kegiatan
+####
+POST  https://donation-api-auth.vercel.app/auth/register
 Content-Type: application/json
 
+
 {
-  "nama": "Kegiatan Baru",
-  "tanggal": "2023-10-01",
-  "lokasi": "Lokasi Baru"
+  "email": "zaennnns@gmail.com",
+  "password": "zaennnns",
+  "nama_lengkap": "zaens zaens",
+  "telp": "081234567890",
+  "role": "admin"
 }
 
-###
 
-POST /login
-
-
-###
-POST  /
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
-
-###
-
-POST  /data-kegiatan-sosial
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
+#### 
+POST  https://donation-api-auth.vercel.app/auth/login
 Content-Type: application/json
 
 {
-  "judul": "Kegiatan Pertemuan",
-  "deskripsi": "Deskripsi kegiatan pertemuan",
+  "email": "zaennnns@gmail.com",
+  "password": "zaennnns"
+}
+
+
+### 
+GET {{hostprod}}/data-kegiatan-sosial?id=3
+Authorization: {{tokenadmin}}
+Content-Type: application/json
+
+### 
+POST {{host}}/data-kegiatan-sosial
+Authorization: {{tokenadmin}}
+Content-Type: application/json
+
+{
+  "judul": "Kegiatan Sosial",
+  "deskripsi": "Kegiatan sosial untuk membantu masyarakat yang membutuhkan.",
+  "lokasi": "Jakarta",
   "tanggal_mulai": "2023-10-01",
-  "tanggal_selesai": "2023-10-05",
-  "lokasi": "Lokasi Pertemuan"
+  "tanggal_selesai": "2023-10-31",
+  "status": "draf"
 }
 
 ###
-DELETE /data-kegiatan-sosial/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
-
-###
-GET /data-kegiatan-sosial/3
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
-
-###
-PUT /data-kegiatan-sosial/3
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
+PATCH {{host}}/data-kegiatan-sosial?id=3
+Authorization: {{tokenadmin}}
 Content-Type: application/json
 
 {
-  "judul": "Kegiatan Pertemuan percobaan 3",
-  "deskripsi": "Deskripsi kegiatan pertemuan",
-  "lokasi": "Lokasi Pertemuan",
-  "tanggal_mulai": "2023-10-01T00:00:00.000Z",
-  "tanggal_selesai": "2023-10-05T00:00:00.000Z",
-  "status": "draft"
-}
-###
-
-PATCH  /data-kegiatan-sosial/3
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg0Mzg3MDR9.Y3vV7W6OWA4z05beiYRWtWZsVH2FlQ58xgQRHlzPFus
-Content-Type: application/json
-
-{
-  "judul": "Kegiatan Pertemuan percobaan 3",
-  "deskripsi": "Deskripsi kegiatan pertemuan",
-  "lokasi": "Lokasi Pertemuan"
+  "judul": "Kegiatan Sosial 1",
+  "deskripsi": "Kegiatan sosial untuk membantu masyarakat yang membutuhkan.",
+  "lokasi": "Jakarta utara",
+  "tanggal_mulai": "2023-10-01",
+  "tanggal_selesai": "2023-10-31",
+  "status": "draf"
 }
