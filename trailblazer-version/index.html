@@ -349,11 +349,11 @@ model laporan_donasi {
 }
     </code></pre>
     </li>
-    <li><p><code>GET /data-kegatan-sosial/:id</code></p>
+    <li><p><code>GET /data-kegatan-sosial/?id=:id</code></p>
     <p><code>:id</code> adalah parameter di mana berdasarkan ID di dalam tabel <code>kegiatan</code> (lihat di skema database).
     Jika ingin semuanya, tinggal hapus paramter <code>:id</code> (belum teruji).</p>
     </li>
-    <li><p><code>PUT /data-kegiatan-sosial/:id</code> (Isian <em>request body</em> <strong>harus</strong> lengkap)</p>
+    <li><p><code>PUT /data-kegiatan-sosial/?id=:id</code> (Isian <em>request body</em> <strong>harus</strong> lengkap)</p>
     <p><code>:id</code> = parameter ID dalam tabel <code>kegiatan</code>.</p>
     <p>Dengan isian contoh untuk <em>request body</em> dalam bentuk JSON (<code>Content-Type: application/json</code>):</p>
     <pre><code class="language-json">{
@@ -366,7 +366,7 @@ model laporan_donasi {
 }
     </code></pre>
     </li>
-    <li><p><code>PUT /data-kegiatan-sosial/:id</code> (Untuk update sebagian kolom rekaman data)</p>
+    <li><p><code>PUT /data-kegiatan-sosial/?id=:id</code> (Untuk update sebagian kolom rekaman data)</p>
     <p><code>:id</code> = parameter ID dalam tabel <code>kegiatan</code>.</p>
     <p>Dengan isian contoh untuk <em>request body</em> dalam bentuk JSON (<code>Content-Type: application/json</code>):</p>
     <pre><code class="language-json">{
@@ -379,8 +379,8 @@ model laporan_donasi {
 }
     </code></pre>
     </li>
-    <li><p><code>DELETE /data-kegiatan-sosial/:id</code></p>
-    <p><code>:id</code> = parameter ID dalam tabel <code>kegiatan</code>.</p>
+    <li><p><code>DELETE /data-kegiatan-sosial/?id=:id</code></p>
+    <p><code>:id</code> = kueri ID kegiatan dalam tabel <code>kegiatan</code>.</p>
     <p>CATATAN: <strong>TIDAK DAPAT DIURUNGKAN. PASTIKAN BENAR-BENAR YAKIN</strong></p>
     </li>
     </ul>
